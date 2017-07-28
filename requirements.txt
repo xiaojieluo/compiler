@@ -1,0 +1,1 @@
+-e git+git@github.com:xiaojieluo/compiler.git@96c3e77f3e9e46500de41bce8acb8968a7c2e34a#egg=compiler
