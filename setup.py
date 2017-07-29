@@ -12,7 +12,7 @@ test_requirements = ['pytest>=3.1.2']
 setup(
     name='compiler',
     keywords='Automatically compile code based on file type',
-    version='0.2.0',
+    version='0.1.0',
     description='A data integrity check library',
     long_description=readme,
     author='Luo Xiaojie',
