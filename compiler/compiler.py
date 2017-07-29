@@ -2,6 +2,7 @@ import argparse
 import os
 import languages
 import inspect
+import re
 
 class NotSupportFormat(Exception):
     pass
@@ -18,11 +19,24 @@ class Compile(object):
 
     def analyzeFile(self):
         '''Analyze file types'''
-        _, ext = os.path.splitext(self.args.fullpath)
+        # print(os.path.split(self.args.fullpath))
+        path, filename = os.path.split(self.args.fullpath)
+        _, ext = os.path.splitext(filename)
         clsmembers = inspect.getmembers(languages, inspect.isclass)
 
         for name, obj in clsmembers:
-            if ext in obj.format():
+            # 排除 Language 类
+            format_ = obj.format()
+            if format_ is None:
+                continue
+
+            # this is a python bug
+            # see https://stackoverflow.com/questions/3675144/regex-error-nothing-to-repeat
+            if format_[0] == '*':
+                format_ = format_.replace(format_[0], '[a-zA-Z0-9]*')
+
+            obj_re = re.compile(r'{}'.format(format_))
+            if obj_re.match(filename):
                 # 返回类名称与实例对象
                 return name, obj(self.args.fullpath)
 

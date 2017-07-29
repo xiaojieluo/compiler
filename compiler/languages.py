@@ -2,7 +2,7 @@ import os
 import subprocess
 
 class Language(object):
-    _FORMAT = []
+    _FORMAT = None
 
     def __init__(self, fullpath):
         self.fullpath = fullpath
@@ -10,14 +10,15 @@ class Language(object):
 
     @classmethod
     def format(cls):
-        return cls._FORMAT
+        if cls._FORMAT:
+            return cls._FORMAT
 
     def compile(self):
         '''compile 接口'''
         raise NotImplementedError('The inheritance class must implement {} interface'.format('compile'))
 
 class Python(Language):
-    _FORMAT = ['.py']
+    _FORMAT = '*.py'
 
     def compile(self):
 
@@ -29,7 +30,13 @@ class Python(Language):
 
 
 class Cpp(Language):
-    _FORMAT = ['.cpp']
+    _FORMAT = '*.cpp'
 
     def compile(self):
         print("Compile C++")
+
+class Makefile(Language):
+    _FORMAT = 'Makefile'
+
+    def compile(self):
+        print("Compile Makefile")
