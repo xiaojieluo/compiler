@@ -19,16 +19,16 @@ class Compile(object):
 
     def analyzeFile(self):
         '''Analyze file types'''
-        # print(os.path.split(self.args.fullpath))
         path, filename = os.path.split(self.args.fullpath)
         _, ext = os.path.splitext(filename)
         clsmembers = inspect.getmembers(languages, inspect.isclass)
 
         for name, obj in clsmembers:
-            # 排除 Language 类
-            format_ = obj.format()
-            if format_ is None:
+            # 排除 Language 类和没有继承自 Language 的类
+            if hasattr(obj, 'format') is False or obj.format() is None:
                 continue
+
+            format_ = obj.format()
 
             # this is a python bug
             # see https://stackoverflow.com/questions/3675144/regex-error-nothing-to-repeat
